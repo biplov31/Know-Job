@@ -25,18 +25,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "username", nullable = false)
+    private String username;
+
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @NaturalId
-    @Column(name = "work_email")
-    private String workEmail;
+    @Column(name = "password", nullable = false)
+    private String password;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "roles", nullable = false)
-    private String roles;
+    @Column(name = "role", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
 
     @ManyToMany(
             cascade = {

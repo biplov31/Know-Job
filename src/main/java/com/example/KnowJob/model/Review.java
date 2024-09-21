@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -28,20 +29,27 @@ public class Review {
     @Column(name = "rating")
     private Float rating;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "department")
     @Enumerated(value = EnumType.STRING)
     private Department department;
 
     @Column(name = "created_at", nullable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "like_count", nullable = false)
+    @Builder.Default
     private Integer likeCount = 0;
 
     @Column(name = "dislike_count", nullable = false)
+    @Builder.Default
     private Integer dislikeCount = 0;
 
     @Column(name = "is_anonymous", nullable = false)
+    @Builder.Default
     private Boolean isAnonymous = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
