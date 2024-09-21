@@ -1,5 +1,6 @@
 package com.example.KnowJob.controller;
 
+import com.example.KnowJob.dto.UserLoginRequestDto;
 import com.example.KnowJob.dto.UserSignUpRequestDto;
 import com.example.KnowJob.dto.UserResponseDto;
 import com.example.KnowJob.service.UserService;
@@ -26,10 +27,16 @@ public class UserController {
         }
     }
 
-    // @GetMapping("/login")
-    // public ResponseEntity<UserResponseDto> logIn(@RequestBody UserSignUpRequestDto userSignUpRequestDto) {
-    //
-    // }
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDto> logIn(@RequestBody UserLoginRequestDto userLoginRequestDto) {
+        UserResponseDto userResponseDto = userService.logIn(userLoginRequestDto);
+
+        if (userResponseDto != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 
 
 

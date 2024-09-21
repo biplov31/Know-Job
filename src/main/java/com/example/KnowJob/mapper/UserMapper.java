@@ -18,11 +18,4 @@ public class UserMapper {
                 .build();
     }
 
-    public UserResponseDto map(User user) {
-        return UserResponseDto.builder()
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .build();
-    }
-
 }
