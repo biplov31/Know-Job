@@ -3,6 +3,7 @@ package com.example.KnowJob.controller;
 import com.example.KnowJob.dto.UserLoginRequestDto;
 import com.example.KnowJob.dto.UserSignUpRequestDto;
 import com.example.KnowJob.dto.UserResponseDto;
+import com.example.KnowJob.dto.VerificationOtpDto;
 import com.example.KnowJob.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,23 @@ public class UserController {
         }
     }
 
+    @GetMapping("/verify")
+    public ResponseEntity<String> getOtp() {
+        userService.sendOtpEmail();
+
+        return ResponseEntity.status(HttpStatus.OK).body("Verify your account with the OTP sent to your email.");
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<String> verify(@RequestBody VerificationOtpDto verificationOtpDto) {
+        boolean isVerified = userService.verifyEmail(verificationOtpDto);
+
+        if (isVerified) {
+            return ResponseEntity.status(HttpStatus.OK).body("Verification successful.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Verification failed.");
+        }
+    }
 
 
 }

@@ -6,13 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class UserSignUpRequestDto {
+public class VerificationOtpDto {
 
-    private String username;
+    private String otpCode;
     private String email;
-    private String password;
 
 }
