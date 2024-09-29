@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,10 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "rating")
@@ -40,9 +44,9 @@ public class Review {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "like_count", nullable = false)
-    @Builder.Default
-    private Integer likeCount = 0;
+    @Column(name = "like_count", nullable = true)
+    @Formula("(SELECT COUNT(v.id) FROM votes v WHERE v.review_id = id AND v.vote_type = 'LIKE')")
+    private Integer likeCount;
 
     @Column(name = "dislike_count", nullable = false)
     @Builder.Default

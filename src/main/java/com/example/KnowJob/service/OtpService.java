@@ -5,6 +5,7 @@ import com.example.KnowJob.model.VerificationOtp;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OtpService {
 
     private static final Long OTP_VALIDITY = TimeUnit.MINUTES.toSeconds(60);
@@ -38,7 +40,7 @@ public class OtpService {
 
             return Optional.of(objectMapper.readValue(jsonStr, VerificationOtp.class));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.warn("JsonProcessingException: {}", e.getMessage());
             return Optional.empty();
         }
     }
@@ -48,7 +50,7 @@ public class OtpService {
             String jsonValue = objectMapper.writeValueAsString(otp);
             redisTemplate.opsForValue().set(key, jsonValue, OTP_VALIDITY, TimeUnit.SECONDS);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.warn("JsonProcessingException: {}", e.getMessage());
         }
     }
 

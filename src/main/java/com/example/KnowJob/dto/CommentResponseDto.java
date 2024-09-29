@@ -6,16 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ReviewResponseDto {
+public class CommentResponseDto {
 
-    private String title;
     private String content;
-    private Float rating;
-    private String email;
-    private String department;
     private Boolean isAnonymous;
     private Integer likeCount;
     private Integer dislikeCount;

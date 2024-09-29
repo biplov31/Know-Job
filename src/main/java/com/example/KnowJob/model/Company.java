@@ -31,8 +31,13 @@ public class Company {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
     @Column(name = "address", nullable = false)
     private String address;
+
+    // logo image
 
     // average rating and total review count
 

@@ -9,15 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReviewResponseDto {
+public class ReviewUpdateRequestDto {
 
     private String title;
     private String content;
     private Float rating;
-    private String email;
     private String department;
     private Boolean isAnonymous;
-    private Integer likeCount;
-    private Integer dislikeCount;
 
 }

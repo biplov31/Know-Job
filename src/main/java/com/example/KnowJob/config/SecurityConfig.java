@@ -35,6 +35,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/comment").permitAll()
                                 .requestMatchers("/post").hasRole("READER")
                                 .requestMatchers(HttpMethod.GET, "/post").permitAll()
+                                .requestMatchers("/vote").hasRole("READER")
                                 .requestMatchers("/company").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET, "/company").permitAll()
                                 .requestMatchers("/user/signup").permitAll()

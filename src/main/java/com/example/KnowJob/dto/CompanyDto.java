@@ -9,13 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReviewRequestDto {
+public class CompanyDto {
 
-    private String title;
-    private String content;
-    private Float rating;
+    private String name;
     private String email;
-    private String department;
-    private Boolean isAnonymous;
+    private String address;
 
 }
