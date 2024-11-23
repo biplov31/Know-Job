@@ -13,6 +13,6 @@ public class CommentRequestDto {
 
     private String content;
     private Boolean isAnonymous;
-    private Long reviewId;
-    private Long postId;
+    // private Long reviewId;
+    // private Long postId;
 }

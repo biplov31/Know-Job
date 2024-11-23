@@ -6,6 +6,7 @@ import com.example.KnowJob.dto.PostResponseDto;
 import com.example.KnowJob.dto.PostUpdateRequestDto;
 import com.example.KnowJob.mapper.CommentMapper;
 import com.example.KnowJob.mapper.PostMapper;
+import com.example.KnowJob.mapper.UserMapper;
 import com.example.KnowJob.model.Comment;
 import com.example.KnowJob.model.Post;
 import com.example.KnowJob.model.PostCategory;
@@ -27,6 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
     private final CommentMapper commentMapper;
+    private final UserMapper userMapper;
     private final LoggedInUser loggedInUser;
 
     public PostResponseDto createPost(PostRequestDto postRequestDto) {
@@ -37,7 +39,11 @@ public class PostService {
 
         Post savedPost = postRepository.save(post);
         if (savedPost.getId() != null) {
-            return postMapper.map(savedPost);
+            PostResponseDto postResponseDto = postMapper.map(savedPost);
+            if (!savedPost.getIsAnonymous()) {
+                postResponseDto.setAuthor(user.getUsername());
+            }
+            return postResponseDto;
         } else {
             throw new RuntimeException("Failed to save post.");
         }

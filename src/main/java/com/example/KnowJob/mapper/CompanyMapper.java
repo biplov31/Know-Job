@@ -1,6 +1,7 @@
 package com.example.KnowJob.mapper;
 
 import com.example.KnowJob.dto.CompanyDto;
+import com.example.KnowJob.dto.CompanyResponseDto;
 import com.example.KnowJob.model.Company;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +16,13 @@ public class CompanyMapper {
                 .build();
     }
 
-    public CompanyDto map(Company company) {
-        return CompanyDto.builder()
+    public CompanyResponseDto map(Company company) {
+        return CompanyResponseDto.builder()
+                .id(company.getId())
                 .name(company.getName())
                 .email(company.getEmail())
                 .address(company.getAddress())
+                .description(company.getDescription())
                 .build();
     }
 

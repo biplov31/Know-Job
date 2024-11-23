@@ -1,9 +1,6 @@
 package com.example.KnowJob.service;
 
-import com.example.KnowJob.dto.CommentResponseDto;
-import com.example.KnowJob.dto.ReviewRequestDto;
-import com.example.KnowJob.dto.ReviewResponseDto;
-import com.example.KnowJob.dto.ReviewUpdateRequestDto;
+import com.example.KnowJob.dto.*;
 import com.example.KnowJob.mapper.CommentMapper;
 import com.example.KnowJob.mapper.ReviewMapper;
 import com.example.KnowJob.model.*;
@@ -13,6 +10,7 @@ import com.example.KnowJob.util.LoggedInUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -80,6 +78,15 @@ public class ReviewService {
         return reviewMapper.map(review);
     }
 
+    public List<ReviewResponseDto> getReviews() {
+        List<Review> reviews = reviewRepository.findAll();
+
+        return reviews
+                .stream()
+                .map(review -> reviewMapper.map(review))
+                .toList();
+    }
+
     public void deleteReview(Long reviewId) {
         Review existingReview = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found."));
@@ -100,11 +107,27 @@ public class ReviewService {
         return existingReview.getUser().equals(currentUser);
     }
 
+    public void addComment(Long reviewId, CommentRequestDto commentRequestDto) {
+        Comment comment = commentMapper.map(commentRequestDto);
+
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found."));
+        comment.setReview(review);
+
+        comment.setUser(loggedInUser.getLoggedInUserEntity());
+
+        review.addComment(comment);
+        reviewRepository.save(review); // this will cascade and save the new comment
+    }
+
     public Set<CommentResponseDto> getComments(Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found."));
 
         Set<Comment> comments = review.getComments();
+        for (Comment comment: comments) {
+            System.out.println(comment);
+        }
         return comments.stream()
                 .map(comment -> commentMapper.map(comment))
                 .collect(Collectors.toSet());

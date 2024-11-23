@@ -14,5 +14,6 @@ public class CompanyDto {
     private String name;
     private String email;
     private String address;
+    private String description;
 
 }

@@ -25,32 +25,36 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentMapper commentMapper;
 
-    public CommentResponseDto addComment(CommentRequestDto commentRequestDto) {
+    public CommentResponseDto addCommentToReview(Long reviewId, CommentRequestDto commentRequestDto) {
         Comment comment = commentMapper.map(commentRequestDto);
 
-        if (commentRequestDto.getReviewId() != null) {
-            Review review = reviewRepository.findById(commentRequestDto.getReviewId())
-                    .orElseThrow(() -> new RuntimeException("Review not found."));
-            comment.setReview(review);
-        }
-
-        if (commentRequestDto.getPostId() != null) {
-            Post post = postRepository.findById(commentRequestDto.getPostId())
-                    .orElseThrow(() -> new RuntimeException("Post not found."));
-            comment.setPost(post);
-        }
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found."));
+        comment.setReview(review);
 
         comment.setUser(loggedInUser.getLoggedInUserEntity());
 
         Comment savedComment = commentRepository.save(comment);
-        if (savedComment.getId() != null) {
-            if (savedComment.getIsAnonymous()) {
-                savedComment.setUser(null);
-            }
-            return commentMapper.map(savedComment);
-        } else {
-            throw new RuntimeException("Failed to save comment.");
+        if (savedComment.getIsAnonymous()) {
+            savedComment.setUser(null);
         }
+        return commentMapper.map(savedComment);
+    }
+
+    public CommentResponseDto addCommentToPost(Long postId, CommentRequestDto commentRequestDto) {
+        Comment comment = commentMapper.map(commentRequestDto);
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found."));
+        comment.setPost(post);
+
+        comment.setUser(loggedInUser.getLoggedInUserEntity());
+
+        Comment savedComment = commentRepository.save(comment);
+        if (savedComment.getIsAnonymous()) {
+            savedComment.setUser(null);
+        }
+        return commentMapper.map(savedComment);
     }
 
     public CommentResponseDto updateComment(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto) {

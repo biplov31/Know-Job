@@ -1,9 +1,6 @@
 package com.example.KnowJob.controller;
 
-import com.example.KnowJob.dto.CommentResponseDto;
-import com.example.KnowJob.dto.ReviewRequestDto;
-import com.example.KnowJob.dto.ReviewResponseDto;
-import com.example.KnowJob.dto.ReviewUpdateRequestDto;
+import com.example.KnowJob.dto.*;
 import com.example.KnowJob.model.Comment;
 import com.example.KnowJob.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -11,16 +8,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("/review")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("/company/{id}")
+    @PostMapping("/company/{companyId}")
     public ResponseEntity<ReviewResponseDto> addReview(@PathVariable Long companyId, @RequestBody ReviewRequestDto reviewRequestDto) {
         ReviewResponseDto reviewResponseDto = reviewService.addReview(companyId, reviewRequestDto);
 
@@ -31,9 +30,9 @@ public class ReviewController {
         }
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<ReviewResponseDto> updateReview(@PathVariable Long id, @RequestBody ReviewUpdateRequestDto reviewRequestDto) {
-        ReviewResponseDto reviewResponseDto = reviewService.updateReview(id, reviewRequestDto);
+    @PatchMapping("/{reviewId}")
+    public ResponseEntity<ReviewResponseDto> updateReview(@PathVariable Long reviewId, @RequestBody ReviewUpdateRequestDto reviewRequestDto) {
+        ReviewResponseDto reviewResponseDto = reviewService.updateReview(reviewId, reviewRequestDto);
 
         if (reviewResponseDto != null) {
             return ResponseEntity.status(HttpStatus.OK).body(reviewResponseDto);
@@ -42,9 +41,9 @@ public class ReviewController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ReviewResponseDto> getReview(@PathVariable Long id) {
-        ReviewResponseDto reviewResponseDto = reviewService.getReview(id);
+    @GetMapping("/{reviewId}")
+    public ResponseEntity<ReviewResponseDto> getReview(@PathVariable Long reviewId) {
+        ReviewResponseDto reviewResponseDto = reviewService.getReview(reviewId);
 
         if (reviewResponseDto != null) {
             return ResponseEntity.status(HttpStatus.OK).body(reviewResponseDto);
@@ -53,15 +52,34 @@ public class ReviewController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteReview(@PathVariable Long id) {
-        reviewService.deleteReview(id);
+    @GetMapping
+    public ResponseEntity<List<ReviewResponseDto>> getReviews() {
+        List<ReviewResponseDto> reviewResponseDtos = reviewService.getReviews();
+
+        if (reviewResponseDtos != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(reviewResponseDtos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<?> deleteReview(@PathVariable Long reviewId) {
+        reviewService.deleteReview(reviewId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{id}/comment")
-    public ResponseEntity<Set<CommentResponseDto>> getComments(@PathVariable Long id) {
-        Set<CommentResponseDto> comments = reviewService.getComments(id);
+    @PostMapping("/{reviewId}/comment")
+    public ResponseEntity<?> addComment(@PathVariable Long reviewId, @RequestBody CommentRequestDto commentRequestDto) {
+        System.out.println("Review comment received.");
+        reviewService.addComment(reviewId, commentRequestDto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{reviewId}/comment")
+    public ResponseEntity<Set<CommentResponseDto>> getComments(@PathVariable Long reviewId) {
+        Set<CommentResponseDto> comments = reviewService.getComments(reviewId);
 
         if (comments != null) {
             return ResponseEntity.status(HttpStatus.OK).body(comments);

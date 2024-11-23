@@ -1,10 +1,8 @@
 package com.example.KnowJob.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
@@ -32,9 +30,9 @@ public class Comment {
     @Formula("(SELECT COUNT(v.id) FROM votes v WHERE v.comment_id = id AND v.vote_type = 'LIKE')")
     private Integer likeCount;
 
-    @Column(name = "dislike_count", nullable = false)
-    @Builder.Default
-    private Integer dislikeCount = 0;
+    @Column(name = "dislike_count", nullable = true)
+    @Formula("(SELECT COUNT(v.id) FROM votes v WHERE v.comment_id = id AND v.vote_type = 'LIKE')")
+    private Integer dislikeCount;
 
     @Column(name = "is_anonymous", nullable = false)
     @Builder.Default
@@ -44,6 +42,7 @@ public class Comment {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Review review;
 
     @ManyToOne(fetch = FetchType.LAZY)

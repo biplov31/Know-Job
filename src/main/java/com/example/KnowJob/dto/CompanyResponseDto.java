@@ -6,15 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class CommentResponseDto {
+public class CompanyResponseDto {
 
     private Long id;
-    private String content;
-    private Boolean isAnonymous;
-    private Integer likeCount;
-    private Integer dislikeCount;
+    private String name;
+    private String email;
+    private String address;
+    private String description;
+    private Float averageRating;
 
 }
+

@@ -6,6 +6,7 @@ public enum Department {
     ADMINISTRATION,
     DEVOPS,
     ENGINEERING,
+    DEVELOPMENT,
     DESIGNER,
     QUALITY_ASSURANCE,
     HUMAN_RESOURCES,

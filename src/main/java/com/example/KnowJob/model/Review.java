@@ -1,10 +1,8 @@
 package com.example.KnowJob.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NaturalId;
 
@@ -38,7 +36,8 @@ public class Review {
 
     @Column(name = "department")
     @Enumerated(value = EnumType.STRING)
-    private Department department;
+    @Builder.Default
+    private Department department = Department.INTERNSHIP;
 
     @Column(name = "created_at", nullable = false)
     @Builder.Default
@@ -48,9 +47,9 @@ public class Review {
     @Formula("(SELECT COUNT(v.id) FROM votes v WHERE v.review_id = id AND v.vote_type = 'LIKE')")
     private Integer likeCount;
 
-    @Column(name = "dislike_count", nullable = false)
-    @Builder.Default
-    private Integer dislikeCount = 0;
+    @Column(name = "dislike_count", nullable = true)
+    @Formula("(SELECT COUNT(v.id) FROM votes v WHERE v.review_id = id AND v.vote_type = 'DISLIKE')")
+    private Integer dislikeCount;
 
     @Column(name = "is_anonymous", nullable = false)
     @Builder.Default
@@ -63,7 +62,11 @@ public class Review {
     @JoinColumn(name = "company_id")
     private Company company;
 
+    // Lombok's ToString and EqualsAndHashCode cause an infinite recursive loop leading to a stackoverflow error
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<Comment> comments = new HashSet<>();
 
     public void addComment(Comment comment) {

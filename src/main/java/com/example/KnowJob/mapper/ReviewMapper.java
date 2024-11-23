@@ -16,7 +16,7 @@ public class ReviewMapper {
                 .title(reviewRequestDto.getTitle())
                 .content(reviewRequestDto.getContent())
                 .rating(reviewRequestDto.getRating())
-                .department(Department.valueOf(reviewRequestDto.getDepartment()))
+                .department(Department.valueOf(reviewRequestDto.getDepartment().toUpperCase()))
                 .isAnonymous(reviewRequestDto.getIsAnonymous())
                 .build();
     }
@@ -27,14 +27,18 @@ public class ReviewMapper {
 
     public ReviewResponseDto map(Review review) {
         return ReviewResponseDto.builder()
+                .id(review.getId())
                 .email(review.getEmail())
                 .title(review.getTitle())
                 .content(review.getContent())
+                .createdAt(review.getCreatedAt())
                 .rating(review.getRating())
                 .department(review.getDepartment().name())
                 .isAnonymous(review.getIsAnonymous())
                 .likeCount(review.getLikeCount())
                 .dislikeCount(review.getDislikeCount())
+                .companyId(review.getCompany().getId())
+                .companyName(review.getCompany().getName())
                 .build();
     }
 

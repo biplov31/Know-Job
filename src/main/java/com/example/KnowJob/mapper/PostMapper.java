@@ -19,9 +19,11 @@ public class PostMapper {
 
     public PostResponseDto map(Post post) {
         return PostResponseDto.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .category(post.getCategory().name())
+                .createdAt(post.getCreatedAt())
                 .isAnonymous(post.getIsAnonymous())
                 .likeCount(post.getLikeCount())
                 .dislikeCount(post.getDislikeCount())

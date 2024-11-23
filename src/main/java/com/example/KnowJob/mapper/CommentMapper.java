@@ -17,6 +17,7 @@ public class CommentMapper {
 
     public CommentResponseDto map(Comment comment) {
         return CommentResponseDto.builder()
+                .id(comment.getId())
                 .content(comment.getContent())
                 .isAnonymous(comment.getIsAnonymous())
                 .likeCount(comment.getLikeCount())

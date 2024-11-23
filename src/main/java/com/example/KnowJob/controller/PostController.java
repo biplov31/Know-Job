@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("/post")
 public class PostController {
@@ -31,7 +32,7 @@ public class PostController {
         }
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequestDto postUpdateRequestDto) {
         PostResponseDto postResponseDto = postService.updatePost(postId, postUpdateRequestDto);
 
@@ -53,7 +54,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{postId}")
     public ResponseEntity<PostResponseDto> getPost(@PathVariable Long postId) {
         PostResponseDto postResponseDto = postService.getPost(postId);
 
@@ -64,13 +65,13 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<?> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/comment")
+    @GetMapping("/{postId}/comment")
     public ResponseEntity<Set<CommentResponseDto>> getComments(@PathVariable Long postId) {
         Set<CommentResponseDto> commentResponseDtos = postService.getComments(postId);
 

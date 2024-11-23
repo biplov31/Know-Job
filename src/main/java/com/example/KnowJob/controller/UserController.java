@@ -11,10 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-
+    // the company is good for devops based on the average rating
     private final UserService userService;
 
     @PostMapping("/signup")
@@ -35,7 +36,7 @@ public class UserController {
         if (userResponseDto != null) {
             return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
@@ -56,6 +57,5 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Verification failed.");
         }
     }
-
 
 }
