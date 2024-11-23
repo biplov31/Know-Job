@@ -11,20 +11,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReviewResponseDto {
+public class PostResponseDto {
 
     private Long id;
     private String title;
     private String content;
-    private Float rating;
-    private String email;
+    private String category;
     private LocalDateTime createdAt;
-    private String department;
     private Boolean isAnonymous;
     private Integer likeCount;
     private Integer dislikeCount;
 
-    private Long companyId;
-    private String companyName;
+    private String author;
 
 }

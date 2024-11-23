@@ -9,13 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReviewRequestDto {
+public class CompanyResponseDto {
 
-    private String title;
-    private String content;
-    private Float rating;
+    private Long id;
+    private String name;
     private String email;
-    private String department;
-    private Boolean isAnonymous;
+    private String address;
+    private String description;
+    private Float averageRating;
 
 }
+

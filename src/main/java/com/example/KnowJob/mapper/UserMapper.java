@@ -14,7 +14,7 @@ public class UserMapper {
                 .username(userSignUpRequestDto.getUsername())
                 .email(userSignUpRequestDto.getEmail())
                 .password(userSignUpRequestDto.getPassword())
-                .role(UserRole.valueOf("ROLE_" + userSignUpRequestDto.getRole()))
+                // .role(UserRole.valueOf("ROLE_" + userSignUpRequestDto.getRole()))
                 .build();
     }
 

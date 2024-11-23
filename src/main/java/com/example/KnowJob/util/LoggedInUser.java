@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class LoggedInUser {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final UserRepository userRepository;
 
     public UserDetails getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -36,6 +37,18 @@ public class LoggedInUser {
         //
         // return userRepository.findByEmail(loggedInEmail)
         //         .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+    }
+
+    public User getLoggedInUserEntity() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            throw new UsernameNotFoundException("User not found.");
+        }
+
+        String loggedInEmail = authentication.getName();
+        return userRepository.findByEmail(loggedInEmail)
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found."));
     }
 
 }
